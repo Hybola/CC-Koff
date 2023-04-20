@@ -14,7 +14,7 @@ const CssMinimizer = require("css-minimizer-webpack-plugin");
 const commonConfig = require("./webpack.config");
 
 //DEV
-const devConfig = merge(commonConfig, {
+const prodConfig = merge(commonConfig, {
   mode: "production",
   output: {
     path: path.resolve(__dirname, "docs"),
@@ -35,20 +35,13 @@ const devConfig = merge(commonConfig, {
     ],
   },
   //PLUGIN  เป็น process ที่ทำหลังจาก bundle เสร็จแล้ว
-  plugins: [
-    new MiniCssExtractPlugin(),
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: "./src/template/index.html", //auto generate html file base on template which auto link image
-    }),
-  ],
+  plugins: [new MiniCssExtractPlugin(), new CleanWebpackPlugin()],
   optimization: {
     minimizer: [
       new TerserPlugin(),
       new CssMinimizer(),
       new HtmlWebpackPlugin({
         template: "./src/template/index.html",
-        filename: "index.min.html",
         minify: {
           removeAttributeQuotes: true,
           collapseWhitespace: true,
@@ -58,4 +51,4 @@ const devConfig = merge(commonConfig, {
     ],
   },
 });
-module.exports = devConfig;
+module.exports = prodConfig;
